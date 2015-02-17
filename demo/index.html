@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>WebAHDSR Demo</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<!-- AHDSR Envelope and Simple Synth -->
+		<!-- View simple-synth.js for examples of how to use web-ahdsr.js to modulate gain and frequency -->
+		<script type="text/javascript" src="../src/web-ahdsr.js"></script>
+		<script type="text/javascript" src="js/simple-synth.js"></script>
+
+		<!-- Page Script -->
+		<script type="text/javascript">
+			window.addEventListener('load', function(e) {
+
+				// Obtain a new audio context:
+				var context = null;
+				if (typeof window.AudioContext != 'undefined') {
+					context = new AudioContext();
+				} else if (typeof window.webkitAudioContext != 'undefined') {
+					context = new webkitAudioContext();
+				}
+
+				if (!context) {
+					console.log('Web Audio API is not supported.');
+					return;
+				}
+
+				// Initialize the synth:
+				window.synth = new SimpleSynth(context);
+				window.synth.init();
+
+				// Configure mouse event listeners:
+				document.getElementById('ahdsr-trigger').addEventListener('mousedown', function(e) {
+					e.preventDefault();
+					window.synth.noteOn();
+				});
+
+				document.getElementById('ahdsr-trigger').addEventListener('mouseup', function(e) {
+					e.preventDefault();
+					window.synth.noteOff();
+				});
+
+			});
+		</script>
+
+		<!-- Styles -->
+		<style>
+			body {
+				font-family: Helvetica, Arial, sans-serif;
+			}
+
+			a {
+				text-decoration: none;
+				color: #0000FF;
+			}
+
+			a:hover {
+				text-decoration: underline;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>WebAHDSR</h1>
+		<p>An envelope generator for WebAudio AudioParam objects.</p>
+		<p><a href="https://github.com/irritant/WebAHDSR">https://github.com/irritant/WebAHDSR</a></p>
+		<p><button id="ahdsr-trigger">Click, Hold &amp; Release</button></p>
+	</body>
+</html>
