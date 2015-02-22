@@ -1,7 +1,7 @@
 /*
 WebAHDSR
 An envelope generator for WebAudio AudioParam.
-https://github.com/irritant/TWAHDSREnvelope
+https://github.com/irritant/WebAHDSR
 
 Copyright (c) 2015 Tony Wallace - tonywallace.ca
 
