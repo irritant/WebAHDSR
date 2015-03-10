@@ -54,16 +54,19 @@ function WebAHDSR(context, param) {
 		var time = _self.context.currentTime;
 		_self.param.cancelScheduledValues(time);
 
+		// Set the initial value to the max of the initialValue property and the current value:
+		var initialValue = Math.max(parseFloat(_self.initialValue), _self.param.value);
+
 		// If the initial level is zero and the attack curve is exponential,
 		// the parameter value will remain at zero until the attack time has elapsed
 		// and then jump suddenly to the hold level. That's not what you want, so set 
 		// the inital level to a low, non-zero value.
-		if (_self.attackCurve == 'exponential' && _self.initialValue == 0.0) {
-			_self.initialValue = 0.001;
+		if (_self.attackCurve == 'exponential' && initialValue == 0.0) {
+			initialValue = 0.001;
 		}
 
 		// Ramp to the initial level:
-		_self.param.linearRampToValueAtTime(parseFloat(_self.initialValue), time);
+		_self.param.linearRampToValueAtTime(initialValue, time);
 
 		// Schedule the attack period:
 		time += parseFloat(_self.attackTime);
