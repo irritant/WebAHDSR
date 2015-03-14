@@ -71,7 +71,15 @@ function WebAHDSR(context, param) {
 		// Schedule the attack period:
 		time += parseFloat(_self.attackTime);
 		if (_self.attackCurve == 'exponential') {
-			_self.param.exponentialRampToValueAtTime(parseFloat(_self.holdValue), time);
+			if (_self.holdValue == 0.0) {
+				// If the hold level is zero and the release curve is exponential,
+				// the parameter value will never reach zero. Ramp the hold level to 
+				// a low, non-zero value followed by a quick linear ramp to zero.
+				_self.param.exponentialRampToValueAtTime(0.001, time);
+				_self.param.linearRampToValueAtTime(0.0, time + 0.01);
+			} else {
+				_self.param.exponentialRampToValueAtTime(parseFloat(_self.holdValue), time);
+			}
 		} else {
 			_self.param.linearRampToValueAtTime(parseFloat(_self.holdValue), time);
 		}
@@ -83,7 +91,15 @@ function WebAHDSR(context, param) {
 		// Schedule the decay period:
 		time += parseFloat(_self.decayTime);
 		if (_self.decayCurve == 'exponential') {
-			_self.param.exponentialRampToValueAtTime(parseFloat(_self.sustainValue), time);
+			if (_self.sustainValue == 0.0) {
+				// If the sustain level is zero and the release curve is exponential,
+				// the parameter value will never reach zero. Ramp the sustain level to 
+				// a low, non-zero value followed by a quick linear ramp to zero.
+				_self.param.exponentialRampToValueAtTime(0.001, time);
+				_self.param.linearRampToValueAtTime(0.0, time + 0.01);
+			} else {
+				_self.param.exponentialRampToValueAtTime(parseFloat(_self.sustainValue), time);
+			}
 		} else {
 			_self.param.linearRampToValueAtTime(parseFloat(_self.sustainValue), time);
 		}
